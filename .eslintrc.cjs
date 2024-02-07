@@ -14,5 +14,7 @@ module.exports = {
             "warn",
             { allowConstantExport: true },
         ],
+        "no-console": "error",
+        "dot-notation": "error",
     },
 };
