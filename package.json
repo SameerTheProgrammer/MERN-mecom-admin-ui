@@ -12,7 +12,7 @@
     "format:check": "prettier . --check",
     "format:fix": "prettier . --write",
     "prepare": "husky",
-    "test": "vitest"
+    "test": "vitest --watch"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -20,6 +20,8 @@
     "react-router-dom": "^6.22.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
@@ -29,6 +31,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "husky": "^9.0.10",
+    "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "typescript": "^5.2.2",
