@@ -17,6 +17,6 @@ describe("Login Page", () => {
         expect(
             screen.getByRole("checkbox", { name: "Remember me" }),
         ).toBeInTheDocument();
-        expect(screen.getByText("Forgot Password")).toBeInTheDocument();
+        expect(screen.getByText("Forgot password")).toBeInTheDocument();
     });
 });
