@@ -8,13 +8,54 @@ import {
     Layout,
     Space,
     Typography,
+    message,
 } from "antd";
 import { LockFilled, MailOutlined } from "@ant-design/icons";
 import { Logo } from "../../components/icons/Logo";
+import { useMutation } from "@tanstack/react-query";
+import { AdminLoginCredentials } from "../../types";
+import { loginApi } from "../../http/api";
 
 const { Title, Paragraph } = Typography;
 
+const loginAdmin = async (credentials: AdminLoginCredentials) => {
+    const { data } = await loginApi(credentials);
+    return data;
+};
+
 const LoginPage = () => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const key = "updatable";
+
+    const { mutate, isPending } = useMutation({
+        mutationKey: ["login"],
+        mutationFn: loginAdmin,
+        onSuccess: async () => {
+            messageApi.open({
+                key,
+                type: "success",
+                content: "Login successful",
+                duration: 2,
+            });
+        },
+        onError: async (error) => {
+            messageApi.open({
+                key,
+                type: "error",
+                content: error.message,
+                duration: 3,
+            });
+        },
+    });
+
+    const openMessage = () => {
+        messageApi.open({
+            key,
+            type: "loading",
+            content: "Loading...",
+        });
+    };
+
     return (
         <>
             <Layout
@@ -62,7 +103,17 @@ const LoginPage = () => {
                             margin: "2.5rem",
                         }}
                     >
-                        <Form>
+                        <Form
+                            onFinish={(values) => {
+                                mutate({
+                                    email: values.email,
+                                    password: values.password,
+                                });
+                                openMessage();
+                            }}
+                            initialValues={{ remember: true }}
+                        >
+                            {contextHolder}
                             <Form.Item
                                 name="email"
                                 hasFeedback
@@ -108,7 +159,6 @@ const LoginPage = () => {
                                 <Form.Item
                                     name="remember"
                                     valuePropName="checked"
-                                    initialValue={{ remember: true }}
                                 >
                                     <Checkbox>Remember me</Checkbox>
                                 </Form.Item>
@@ -127,6 +177,7 @@ const LoginPage = () => {
                                     type="primary"
                                     htmlType="submit"
                                     className="login-form-button"
+                                    loading={isPending}
                                 >
                                     Log in
                                 </Button>
