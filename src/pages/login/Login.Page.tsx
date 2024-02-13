@@ -23,6 +23,21 @@ const loginAdmin = async (credentials: AdminLoginCredentials) => {
     return data;
 };
 
+interface IHttpError extends Error {
+    response: {
+        data: {
+            errors: [
+                {
+                    location: string;
+                    msg: string;
+                    path: string;
+                    type: string;
+                },
+            ];
+        };
+    };
+}
+
 const LoginPage = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const key = "updatable";
@@ -42,7 +57,7 @@ const LoginPage = () => {
             messageApi.open({
                 key,
                 type: "error",
-                content: error.message,
+                content: (error as IHttpError).response.data.errors[0].msg,
                 duration: 3,
             });
         },
