@@ -13,20 +13,10 @@ import {
 import { LockFilled, MailOutlined } from "@ant-design/icons";
 import { Logo } from "../../components/icons/Logo";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AdminLoginCredentials, IHttpError } from "../../types";
-import { loginAdminApi, selfDataAdminApi } from "../../http/api";
+import { IHttpError } from "../../types";
 import { adminAuthStore } from "../../store";
+import { loginAdmin, selfDataAdmin } from "../../http/apiFunction";
 const { Title, Paragraph } = Typography;
-
-const loginAdmin = async (credentials: AdminLoginCredentials) => {
-    const { data } = await loginAdminApi(credentials);
-    return data;
-};
-
-const selfDataAdmin = async () => {
-    const { data } = await selfDataAdminApi();
-    return data;
-};
 
 const LoginPage = () => {
     const { setAdmin } = adminAuthStore();
