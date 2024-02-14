@@ -15,6 +15,7 @@ import { Logo } from "../../components/icons/Logo";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AdminLoginCredentials, IHttpError } from "../../types";
 import { loginAdminApi, selfDataAdminApi } from "../../http/api";
+import { adminAuthStore } from "../../store";
 const { Title, Paragraph } = Typography;
 
 const loginAdmin = async (credentials: AdminLoginCredentials) => {
@@ -28,12 +29,11 @@ const selfDataAdmin = async () => {
 };
 
 const LoginPage = () => {
+    const { setAdmin } = adminAuthStore();
     const [messageApi, contextHolder] = message.useMessage();
-    const key = "updatable";
 
     // fetching logged user data
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { data: selfData, refetch } = useQuery({
+    const { refetch } = useQuery({
         queryKey: ["selfData"],
         queryFn: selfDataAdmin,
         enabled: false,
@@ -44,10 +44,10 @@ const LoginPage = () => {
         mutationKey: ["login"],
         mutationFn: loginAdmin,
         onSuccess: async () => {
-            refetch();
-
+            const selfDataPromise = await refetch();
+            setAdmin(selfDataPromise.data);
             messageApi.open({
-                key,
+                key: "login",
                 type: "success",
                 content: "Login successful",
                 duration: 2,
@@ -55,7 +55,7 @@ const LoginPage = () => {
         },
         onError: async (error) => {
             messageApi.open({
-                key,
+                key: "login",
                 type: "error",
                 content: (error as IHttpError).response.data.errors[0].msg,
                 duration: 3,
@@ -65,7 +65,7 @@ const LoginPage = () => {
 
     const openMessage = () => {
         messageApi.open({
-            key,
+            key: "login",
             type: "loading",
             content: "Loading...",
         });
