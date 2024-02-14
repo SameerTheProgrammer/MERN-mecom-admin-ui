@@ -12,40 +12,40 @@ import {
 } from "antd";
 import { LockFilled, MailOutlined } from "@ant-design/icons";
 import { Logo } from "../../components/icons/Logo";
-import { useMutation } from "@tanstack/react-query";
-import { AdminLoginCredentials } from "../../types";
-import { loginApi } from "../../http/api";
-
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AdminLoginCredentials, IHttpError } from "../../types";
+import { loginAdminApi, selfDataAdminApi } from "../../http/api";
 const { Title, Paragraph } = Typography;
 
 const loginAdmin = async (credentials: AdminLoginCredentials) => {
-    const { data } = await loginApi(credentials);
+    const { data } = await loginAdminApi(credentials);
     return data;
 };
 
-interface IHttpError extends Error {
-    response: {
-        data: {
-            errors: [
-                {
-                    location: string;
-                    msg: string;
-                    path: string;
-                    type: string;
-                },
-            ];
-        };
-    };
-}
+const selfDataAdmin = async () => {
+    const { data } = await selfDataAdminApi();
+    return data;
+};
 
 const LoginPage = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const key = "updatable";
 
+    // fetching logged user data
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { data: selfData, refetch } = useQuery({
+        queryKey: ["selfData"],
+        queryFn: selfDataAdmin,
+        enabled: false,
+    });
+
+    // sending request to auth service to login admin
     const { mutate, isPending } = useMutation({
         mutationKey: ["login"],
         mutationFn: loginAdmin,
         onSuccess: async () => {
+            refetch();
+
             messageApi.open({
                 key,
                 type: "success",
