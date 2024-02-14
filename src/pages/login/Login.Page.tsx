@@ -68,6 +68,7 @@ const LoginPage = () => {
             key: "login",
             type: "loading",
             content: "Loading...",
+            duration: 10,
         });
     };
 
