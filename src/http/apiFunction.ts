@@ -1,5 +1,5 @@
 import { AdminLoginCredentials } from "../types";
-import { loginAdminApi, selfDataAdminApi } from "./api";
+import { adminLogoutApi, loginAdminApi, selfDataAdminApi } from "./api";
 
 export const loginAdmin = async (credentials: AdminLoginCredentials) => {
     const { data } = await loginAdminApi(credentials);
@@ -9,4 +9,8 @@ export const loginAdmin = async (credentials: AdminLoginCredentials) => {
 export const selfDataAdmin = async () => {
     const { data } = await selfDataAdminApi();
     return data;
+};
+
+export const adminLogout = async () => {
+    await adminLogoutApi();
 };

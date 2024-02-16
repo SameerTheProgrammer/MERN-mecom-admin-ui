@@ -1,6 +1,17 @@
 import { NavLink, Navigate, Outlet } from "react-router-dom";
 import { adminAuthStore } from "../store";
-import { Breadcrumb, Flex, Layout, Menu, MenuProps, theme } from "antd";
+import {
+    Avatar,
+    Badge,
+    Breadcrumb,
+    Dropdown,
+    Flex,
+    Layout,
+    Menu,
+    MenuProps,
+    Space,
+    theme,
+} from "antd";
 import {
     HomeOutlined,
     ShoppingOutlined,
@@ -10,9 +21,12 @@ import {
     SettingOutlined,
     GiftOutlined,
     WalletOutlined,
+    BellFilled,
 } from "@ant-design/icons";
 import { useState } from "react";
 import { Logo } from "../components/icons/Logo";
+import { useMutation } from "@tanstack/react-query";
+import { adminLogout } from "../http/apiFunction";
 const { Header, Content, Footer, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -31,7 +45,7 @@ function getItem(
     } as MenuItem;
 }
 
-const items: MenuItem[] = [
+const sidebarItems: MenuItem[] = [
     getItem("/", <NavLink to="/">Dashboard</NavLink>, <HomeOutlined />),
     getItem("/users", <NavLink to="/">All Users</NavLink>, <TeamOutlined />),
     getItem(
@@ -74,7 +88,16 @@ const DashboardLayout = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
-    const { admin } = adminAuthStore();
+    const { logout: logoutFromStore, admin } = adminAuthStore();
+    const { mutate: logoutMutate } = useMutation({
+        mutationKey: ["logout"],
+        mutationFn: adminLogout,
+        onSuccess: async () => {
+            logoutFromStore();
+            return;
+        },
+    });
+
     if (admin === null) {
         return <Navigate to={"/auth/login"} replace={true} />;
     }
@@ -120,14 +143,46 @@ const DashboardLayout = () => {
                         theme="light"
                         defaultSelectedKeys={["/"]}
                         mode="inline"
-                        items={items}
+                        items={sidebarItems}
                     />
                 </Sider>
                 <Layout style={layoutStyle}>
                     <Header
-                        style={{ padding: 0, background: colorBgContainer }}
+                        style={{
+                            paddingRight: "2rem",
+                            background: colorBgContainer,
+                        }}
                     >
-                        {" "}
+                        <Flex align="center" justify="flex-end">
+                            <Space size="middle">
+                                <Badge
+                                    count={5}
+                                    size="small"
+                                    status="success"
+                                    title="Notifications"
+                                >
+                                    <BellFilled />
+                                </Badge>
+                                <Dropdown
+                                    menu={{
+                                        items: [
+                                            {
+                                                key: "logout",
+                                                label: "Logout",
+                                                onClick: () => logoutMutate(),
+                                            },
+                                        ],
+                                    }}
+                                    placement="bottomRight"
+                                    arrow={{ pointAtCenter: true }}
+                                >
+                                    <Avatar
+                                        icon={<TeamOutlined />}
+                                        size="large"
+                                    />
+                                </Dropdown>
+                            </Space>
+                        </Flex>
                     </Header>
                     <Content
                         style={{ margin: "24px 16px 0", overflow: "initial" }}
