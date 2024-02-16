@@ -7,11 +7,11 @@ import { useMutation } from "@tanstack/react-query";
 import { adminLogout } from "../http/apiFunction";
 import BreadCrumb from "../components/Breadcumb";
 import AdminFooter from "../components/AdminFooter";
-import AdminHeader from "./../components/AdminHeader";
+import AdminHeader from "../components/AdminHeader";
 import AdminSlider from "../components/AdminSider";
 const { Content } = Layout;
 
-const DashboardLayout = () => {
+const HomeLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
 
     const layoutStyle = {
@@ -70,4 +70,4 @@ const DashboardLayout = () => {
     );
 };
 
-export default DashboardLayout;
+export default HomeLayout;

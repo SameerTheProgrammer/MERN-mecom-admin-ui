@@ -4,7 +4,7 @@ import { Typography } from "antd";
 import { adminAuthStore } from "../store";
 const { Title } = Typography;
 
-function HomePage() {
+function DashboardPage() {
     const time = new Date().getHours();
     const { admin } = adminAuthStore();
     return (
@@ -20,4 +20,4 @@ function HomePage() {
     );
 }
 
-export default HomePage;
+export default DashboardPage;
