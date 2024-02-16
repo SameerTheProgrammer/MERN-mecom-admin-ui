@@ -1,6 +1,6 @@
 import { Flex, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
-import { Logo } from "./icons/Logo";
+import { Logo } from "../icons/Logo";
 import {
     HomeOutlined,
     ShoppingOutlined,

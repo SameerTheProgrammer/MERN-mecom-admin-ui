@@ -5,10 +5,10 @@ import { Layout, theme } from "antd";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { adminLogout } from "../http/apiFunction";
-import BreadCrumb from "../components/Breadcumb";
-import AdminFooter from "../components/AdminFooter";
-import AdminHeader from "../components/AdminHeader";
-import AdminSlider from "../components/AdminSider";
+import BreadCrumb from "../components/HomePage/Breadcumb";
+import AdminFooter from "../components/HomePage/AdminFooter";
+import AdminHeader from "../components/HomePage/AdminHeader";
+import AdminSlider from "../components/HomePage/AdminSider";
 const { Content } = Layout;
 
 const HomeLayout = () => {
