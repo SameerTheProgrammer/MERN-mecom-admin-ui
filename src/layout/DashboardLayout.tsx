@@ -8,7 +8,6 @@ import {
     Flex,
     Layout,
     Menu,
-    MenuProps,
     Space,
     theme,
 } from "antd";
@@ -29,52 +28,47 @@ import { useMutation } from "@tanstack/react-query";
 import { adminLogout } from "../http/apiFunction";
 const { Header, Content, Footer, Sider } = Layout;
 
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-    key: React.Key,
-    label: React.ReactNode,
-    icon?: React.ReactNode,
-    children?: MenuItem[],
-): MenuItem {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    } as MenuItem;
-}
-
-const sidebarItems: MenuItem[] = [
-    getItem("/", <NavLink to="/">Dashboard</NavLink>, <HomeOutlined />),
-    getItem("/users", <NavLink to="/">All Users</NavLink>, <TeamOutlined />),
-    getItem(
-        "/sellers",
-        <NavLink to="/">All Sellers</NavLink>,
-        <ShopOutlined />,
-        // [getItem("Tom", "3"), getItem("Bill", "4"), getItem("Alex", "5")],
-    ),
-    getItem(
-        "/products",
-        <NavLink to="/">All Products</NavLink>,
-        <ProductOutlined />,
-    ),
-    getItem(
-        "/orders",
-        <NavLink to="/">All Orders</NavLink>,
-        <ShoppingOutlined />,
-    ),
-    getItem("/events", <NavLink to="/">All Events</NavLink>, <GiftOutlined />),
-    getItem(
-        "/seller-withdraws",
-        <NavLink to="/">Withdraw Request</NavLink>,
-        <WalletOutlined />,
-    ),
-    getItem(
-        "/Settings",
-        <NavLink to="/">Settings</NavLink>,
-        <SettingOutlined />,
-    ),
+const items = [
+    {
+        key: "/",
+        label: <NavLink to="/">Dashboard</NavLink>,
+        icon: <HomeOutlined />,
+    },
+    {
+        key: "/users",
+        label: <NavLink to="/">All Users</NavLink>,
+        icon: <TeamOutlined />,
+    },
+    {
+        key: "/sellers",
+        label: <NavLink to="/">All Sellers</NavLink>,
+        icon: <ShopOutlined />,
+    },
+    {
+        key: "/products",
+        label: <NavLink to="/">All Products</NavLink>,
+        icon: <ProductOutlined />,
+    },
+    {
+        key: "/orders",
+        label: <NavLink to="/">All Orders</NavLink>,
+        icon: <ShoppingOutlined />,
+    },
+    {
+        key: "/events",
+        label: <NavLink to="/">All Events</NavLink>,
+        icon: <GiftOutlined />,
+    },
+    {
+        key: "/seller-withdraws",
+        label: <NavLink to="/">Withdraw Request</NavLink>,
+        icon: <WalletOutlined />,
+    },
+    {
+        key: "/Settings",
+        label: <NavLink to="/">Settings</NavLink>,
+        icon: <SettingOutlined />,
+    },
 ];
 
 const DashboardLayout = () => {
@@ -143,7 +137,7 @@ const DashboardLayout = () => {
                         theme="light"
                         defaultSelectedKeys={["/"]}
                         mode="inline"
-                        items={sidebarItems}
+                        items={items}
                     />
                 </Sider>
                 <Layout style={layoutStyle}>
