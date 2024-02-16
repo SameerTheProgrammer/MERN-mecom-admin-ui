@@ -51,13 +51,18 @@ const HomeLayout = () => {
                     <Content
                         style={{ margin: "0 10px 0", overflow: "initial" }}
                     >
-                        <BreadCrumb styles={{ margin: "5px 5px" }} />
+                        <BreadCrumb
+                            styles={{
+                                padding: "5px 10px",
+                                marginBottom: "10px",
+                                borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
+                            }}
+                        />
                         <div
                             style={{
-                                padding: 24,
+                                padding: "0 10px",
                                 minHeight: 360,
                                 height: "100%",
-                                background: colorBgContainer,
                             }}
                         >
                             <Outlet />
