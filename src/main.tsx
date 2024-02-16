@@ -18,6 +18,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                         colorPrimary: "#4ED93F",
                         colorLink: "#3FD99B",
                     },
+                    components: {
+                        Layout: {
+                            headerHeight: 55,
+                        },
+                    },
                 }}
             >
                 <RouterProvider router={router} />

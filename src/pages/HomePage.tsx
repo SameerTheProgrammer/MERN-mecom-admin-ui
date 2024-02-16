@@ -1,18 +1,21 @@
 // import React from "react";
 
+import { Typography } from "antd";
+import { adminAuthStore } from "../store";
+const { Title } = Typography;
+
 function HomePage() {
+    const time = new Date().getHours();
+    const { admin } = adminAuthStore();
     return (
         <>
-            <div>Hello from home page of route path "/"</div>
-            {/* {
-                // indicates very long content
-                Array.from({ length: 100 }, (_, index) => (
-                    <React.Fragment key={index}>
-                        {index % 20 === 0 && index ? "more" : "..."}
-                        <br />
-                    </React.Fragment>
-                ))
-            } */}
+            <div>
+                <Title level={5}>
+                    {time > 0 && time < 12 ? "Good Morning" : "Good Evening"},
+                    <br />
+                    {admin?.firstName} 😃
+                </Title>
+            </div>
         </>
     );
 }

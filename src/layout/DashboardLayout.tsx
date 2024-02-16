@@ -3,9 +3,9 @@ import { adminAuthStore } from "../store";
 import {
     Avatar,
     Badge,
-    Breadcrumb,
     Dropdown,
     Flex,
+    Image,
     Layout,
     Menu,
     Space,
@@ -26,9 +26,10 @@ import { useState } from "react";
 import { Logo } from "../components/icons/Logo";
 import { useMutation } from "@tanstack/react-query";
 import { adminLogout } from "../http/apiFunction";
+import BreadCrumb from "../components/Breadcumb";
 const { Header, Content, Footer, Sider } = Layout;
 
-const items = [
+const sidebarItems = [
     {
         key: "/",
         label: <NavLink to="/">Dashboard</NavLink>,
@@ -137,7 +138,7 @@ const DashboardLayout = () => {
                         theme="light"
                         defaultSelectedKeys={["/"]}
                         mode="inline"
-                        items={items}
+                        items={sidebarItems}
                     />
                 </Sider>
                 <Layout style={layoutStyle}>
@@ -155,7 +156,9 @@ const DashboardLayout = () => {
                                     status="success"
                                     title="Notifications"
                                 >
-                                    <BellFilled />
+                                    <BellFilled
+                                        style={{ fontSize: "1.25rem" }}
+                                    />
                                 </Badge>
                                 <Dropdown
                                     menu={{
@@ -171,7 +174,9 @@ const DashboardLayout = () => {
                                     arrow={{ pointAtCenter: true }}
                                 >
                                     <Avatar
-                                        icon={<TeamOutlined />}
+                                        icon={
+                                            <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" />
+                                        }
                                         size="large"
                                     />
                                 </Dropdown>
@@ -179,12 +184,9 @@ const DashboardLayout = () => {
                         </Flex>
                     </Header>
                     <Content
-                        style={{ margin: "24px 16px 0", overflow: "initial" }}
+                        style={{ margin: "0 16px 0", overflow: "initial" }}
                     >
-                        <Breadcrumb style={{ margin: "16px 0" }}>
-                            <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                        </Breadcrumb>
+                        <BreadCrumb styles={{ margin: "10px 5px" }} />
                         <div
                             style={{
                                 padding: 24,
