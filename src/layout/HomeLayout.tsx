@@ -1,7 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { adminAuthStore } from "../store";
 import { Layout, theme } from "antd";
-
 import { useMutation } from "@tanstack/react-query";
 import { adminLogout } from "../http/apiFunction";
 import BreadCrumb from "../components/HomePage/Breadcumb";
@@ -38,9 +37,7 @@ const HomeLayout = () => {
                         colorBgContainer={colorBgContainer}
                         logoutMutate={logoutMutate}
                     />
-                    <Content
-                        style={{ margin: "0 10px 0", overflow: "initial" }}
-                    >
+                    <Content style={{ margin: "0 16px" }}>
                         <BreadCrumb />
                         <div
                             style={{

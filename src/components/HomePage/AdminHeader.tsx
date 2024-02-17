@@ -1,5 +1,5 @@
-import { Avatar, Badge, Dropdown, Flex, Image, Layout, Space } from "antd";
-import { BellFilled } from "@ant-design/icons";
+import { Avatar, Badge, Dropdown, Flex, Layout, Space } from "antd";
+import { BellFilled, DownOutlined } from "@ant-design/icons";
 import { UseMutateFunction } from "@tanstack/react-query";
 const { Header } = Layout;
 
@@ -13,7 +13,7 @@ const AdminHeader = ({ colorBgContainer, logoutMutate }: AdminHeaderProps) => {
         <div>
             <Header
                 style={{
-                    paddingRight: "2rem",
+                    paddingRight: "16px",
                     background: colorBgContainer,
                 }}
             >
@@ -40,15 +40,21 @@ const AdminHeader = ({ colorBgContainer, logoutMutate }: AdminHeaderProps) => {
                             placement="bottomRight"
                             arrow={{ pointAtCenter: true }}
                         >
-                            <Avatar
-                                icon={
-                                    <Image
-                                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                                        preview={false}
-                                    />
-                                }
-                                size="large"
-                            />
+                            <Flex gap="small" align="center">
+                                <Avatar
+                                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                    size="large"
+                                />
+                                <Avatar
+                                    shape="square"
+                                    size={20}
+                                    icon={<DownOutlined />}
+                                    style={{
+                                        background: "rgba(0, 0, 0, 0.02)",
+                                        color: "#000",
+                                    }}
+                                />
+                            </Flex>
                         </Dropdown>
                     </Space>
                 </Flex>
