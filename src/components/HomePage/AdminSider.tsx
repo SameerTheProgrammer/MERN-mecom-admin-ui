@@ -12,7 +12,7 @@ import {
     WalletOutlined,
 } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
-import React, { SetStateAction } from "react";
+import React from "react";
 
 const sidebarItems = [
     {
@@ -22,53 +22,45 @@ const sidebarItems = [
     },
     {
         key: "/users",
-        label: <NavLink to="/">All Users</NavLink>,
+        label: <NavLink to="/users">All Users</NavLink>,
         icon: <TeamOutlined />,
     },
     {
         key: "/sellers",
-        label: <NavLink to="/">All Sellers</NavLink>,
+        label: <NavLink to="/sellers">All Sellers</NavLink>,
         icon: <ShopOutlined />,
     },
     {
         key: "/products",
-        label: <NavLink to="/">All Products</NavLink>,
+        label: <NavLink to="/products">All Products</NavLink>,
         icon: <ProductOutlined />,
     },
     {
         key: "/orders",
-        label: <NavLink to="/">All Orders</NavLink>,
+        label: <NavLink to="/orders">All Orders</NavLink>,
         icon: <ShoppingOutlined />,
     },
     {
         key: "/events",
-        label: <NavLink to="/">All Events</NavLink>,
+        label: <NavLink to="/events">All Events</NavLink>,
         icon: <GiftOutlined />,
     },
     {
-        key: "/seller-withdraws",
-        label: <NavLink to="/">Withdraw Request</NavLink>,
+        key: "/withdrawal-request",
+        label: <NavLink to="/withdrawal-request">Withdraw Request</NavLink>,
         icon: <WalletOutlined />,
     },
     {
-        key: "/Settings",
+        key: "/settings",
         label: <NavLink to="/">Settings</NavLink>,
         icon: <SettingOutlined />,
     },
 ];
 
-interface AdminSiderProps {
-    collapsed: boolean;
-    setCollapsed: React.Dispatch<SetStateAction<boolean>>;
-}
-
-const AdminSider: React.FC<AdminSiderProps> = ({ collapsed, setCollapsed }) => {
+const AdminSider: React.FC = () => {
     return (
         <Sider
             theme="light"
-            collapsible
-            collapsed={collapsed}
-            onCollapse={(value) => setCollapsed(value)}
             style={{
                 overflow: "auto",
                 height: "100vh",
@@ -91,11 +83,9 @@ const AdminSider: React.FC<AdminSiderProps> = ({ collapsed, setCollapsed }) => {
                         fontSize: "1.5rem",
                         fontWeight: "bold",
                         color: "#00CC66 ",
-                        opacity: `${collapsed ? "0" : "1"}`,
-                        transition: "opacity 0.2s ease 0.2s",
                     }}
                 >
-                    {!collapsed && "Mecom"}
+                    Mecom
                 </div>
             </Flex>
             <Menu

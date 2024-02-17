@@ -2,7 +2,6 @@ import { Navigate, Outlet } from "react-router-dom";
 import { adminAuthStore } from "../store";
 import { Layout, theme } from "antd";
 
-import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { adminLogout } from "../http/apiFunction";
 import BreadCrumb from "../components/HomePage/Breadcumb";
@@ -12,12 +11,6 @@ import AdminSlider from "../components/HomePage/AdminSider";
 const { Content } = Layout;
 
 const HomeLayout = () => {
-    const [collapsed, setCollapsed] = useState(false);
-
-    const layoutStyle = {
-        marginLeft: collapsed ? 80 : 200,
-    };
-
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -39,11 +32,8 @@ const HomeLayout = () => {
     return (
         <div>
             <Layout style={{ minHeight: "100vh" }}>
-                <AdminSlider
-                    collapsed={collapsed}
-                    setCollapsed={setCollapsed}
-                />
-                <Layout style={layoutStyle}>
+                <AdminSlider />
+                <Layout style={{ marginLeft: 200 }}>
                     <AdminHeader
                         colorBgContainer={colorBgContainer}
                         logoutMutate={logoutMutate}
@@ -51,13 +41,7 @@ const HomeLayout = () => {
                     <Content
                         style={{ margin: "0 10px 0", overflow: "initial" }}
                     >
-                        <BreadCrumb
-                            styles={{
-                                padding: "5px 10px",
-                                marginBottom: "10px",
-                                borderBottom: "1px solid rgba(5, 5, 5, 0.06)",
-                            }}
-                        />
+                        <BreadCrumb />
                         <div
                             style={{
                                 padding: "0 10px",

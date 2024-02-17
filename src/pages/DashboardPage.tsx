@@ -61,6 +61,27 @@ const list = [
         status: "on the way",
         loading: false,
     },
+    {
+        OrderSummary: "Paneer, Chicken BBQ ...",
+        address: "Balurghat, West bengal",
+        amount: 2000,
+        status: "on the way",
+        loading: false,
+    },
+    {
+        OrderSummary: "Paneer, Chicken BBQ ...",
+        address: "Balurghat, West bengal",
+        amount: 2000,
+        status: "on the way",
+        loading: false,
+    },
+    {
+        OrderSummary: "Paneer, Chicken BBQ ...",
+        address: "Balurghat, West bengal",
+        amount: 2000,
+        status: "on the way",
+        loading: false,
+    },
 ];
 
 interface CardTitleProps {
@@ -84,7 +105,9 @@ function DashboardPage() {
         <>
             <div>
                 <Title level={5}>
-                    {time > 0 && time < 12 ? "Good Morning" : "Good Evening"},
+                    {time > 0 && time < 12
+                        ? "Good Morning, "
+                        : "Good Evening, "}
                     <br />
                     {admin?.firstName} 😃
                 </Title>

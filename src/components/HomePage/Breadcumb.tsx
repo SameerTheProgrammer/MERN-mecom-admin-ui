@@ -1,13 +1,9 @@
 import { useLocation, Link } from "react-router-dom";
 import { Breadcrumb } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined, RightOutlined } from "@ant-design/icons";
 import React from "react";
 
-interface BreadCrumbProps {
-    styles?: React.CSSProperties;
-}
-
-const BreadCrumb: React.FC<BreadCrumbProps> = ({ styles }) => {
+const BreadCrumb: React.FC = () => {
     const location = useLocation();
 
     const breadCrumbView = () => {
@@ -16,18 +12,21 @@ const BreadCrumb: React.FC<BreadCrumbProps> = ({ styles }) => {
         const capitalize = (s: string) =>
             s.charAt(0).toUpperCase() + s.slice(1);
 
+        const style = {
+            padding: "5px 10px",
+            marginBottom: "10px",
+            borderBottom:
+                pathnames.length > 0 ? "1px solid rgba(5, 5, 5, 0.06)" : 0,
+        };
+
         return (
-            <div style={styles}>
-                <Breadcrumb>
-                    {pathnames.length > 0 ? (
+            <div style={style}>
+                <Breadcrumb separator={<RightOutlined />}>
+                    {pathnames.length > 0 && (
                         <Breadcrumb.Item>
                             <Link to="/">
                                 <HomeOutlined />
                             </Link>
-                        </Breadcrumb.Item>
-                    ) : (
-                        <Breadcrumb.Item>
-                            <HomeOutlined /> {">"}
                         </Breadcrumb.Item>
                     )}
                     {pathnames.map((name, index) => {
