@@ -1,20 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-export type TAvatar = {
-    public_id: string;
-    url: string;
-};
-
-export interface IAdmin {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    role: string;
-    avatar: TAvatar | null;
-}
+import { IAdmin } from "./types";
 
 interface IAdminAuthState {
     admin: null | IAdmin;

@@ -23,3 +23,18 @@ export interface IHttpError extends Error {
         };
     };
 }
+
+export type TAvatar = {
+    public_id: string;
+    url: string;
+};
+
+export interface IAdmin {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    role: string;
+    avatar: TAvatar | null;
+}
