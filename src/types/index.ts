@@ -38,3 +38,30 @@ export interface IAdmin {
     role: string;
     avatar: TAvatar | null;
 }
+
+export interface ICustomer {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    role: string;
+    avatar: TAvatar | null;
+    updatedAt: number;
+    createdAt: number;
+}
+
+export interface ISeller {
+    id: number;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    role: string;
+    avatar: TAvatar | null;
+    description: string;
+    address: string;
+    zipCode: string;
+    avaiableBalance: number;
+    updatedAt: number;
+    createdAt: number;
+}

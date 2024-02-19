@@ -1,7 +1,8 @@
 import { AdminLoginCredentials } from "../types";
 import {
     adminLogoutApi,
-    getAllUsersApi,
+    getAllCustomersApi,
+    getAllSellersApi,
     loginAdminApi,
     selfDataAdminApi,
 } from "./api";
@@ -20,7 +21,12 @@ export const adminLogout = async () => {
     await adminLogoutApi();
 };
 
-export const getAllUsers = async () => {
-    const { data } = await getAllUsersApi();
+export const getAllCustomers = async () => {
+    const { data } = await getAllCustomersApi();
+    return data;
+};
+
+export const getAllSellers = async () => {
+    const { data } = await getAllSellersApi();
     return data;
 };

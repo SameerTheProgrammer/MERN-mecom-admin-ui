@@ -5,7 +5,6 @@ import {
     HomeOutlined,
     ShoppingOutlined,
     TeamOutlined,
-    ShopOutlined,
     ProductOutlined,
     SettingOutlined,
     GiftOutlined,
@@ -24,11 +23,6 @@ const sidebarItems = [
         key: "/users",
         label: <NavLink to="/users">All Users</NavLink>,
         icon: <TeamOutlined />,
-    },
-    {
-        key: "/sellers",
-        label: <NavLink to="/sellers">All Sellers</NavLink>,
-        icon: <ShopOutlined />,
     },
     {
         key: "/products",

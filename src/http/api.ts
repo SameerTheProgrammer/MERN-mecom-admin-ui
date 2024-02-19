@@ -9,4 +9,6 @@ export const selfDataAdminApi = () => api.get("/admin/self");
 
 export const adminLogoutApi = () => api.post("/admin/logout");
 
-export const getAllUsersApi = () => api.post("/auth/user/getAll");
+export const getAllCustomersApi = () => api.post("/auth/user/getAll");
+
+export const getAllSellersApi = () => api.post("/auth/seller/getAll");

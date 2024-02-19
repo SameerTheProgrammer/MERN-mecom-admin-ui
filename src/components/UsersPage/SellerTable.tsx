@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { getAllUsers } from "../../http/apiFunction";
-import { IAdmin } from "../../types";
+import { getAllSellers } from "../../http/apiFunction";
+import { ISeller } from "../../types";
 import { Avatar, Space, Table, TableProps, Tag } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 
-const columns: TableProps<IAdmin>["columns"] = [
+const columns: TableProps<ISeller>["columns"] = [
     {
         title: "Id",
         dataIndex: "id",
@@ -18,7 +18,7 @@ const columns: TableProps<IAdmin>["columns"] = [
         key: "name",
         render: (_text, record) => {
             return (
-                <Link to={`/users/${record.id}`}>
+                <Link to={`/auth/seller/get/${record.id}`}>
                     {record.avatar !== null ? (
                         <Avatar
                             shape="circle"
@@ -31,7 +31,7 @@ const columns: TableProps<IAdmin>["columns"] = [
                             icon={<UserOutlined />}
                         />
                     )}{" "}
-                    {record.firstName} {record.lastName}
+                    {record.name}
                 </Link>
             );
         },
@@ -59,6 +59,35 @@ const columns: TableProps<IAdmin>["columns"] = [
         },
     },
     {
+        title: "Description",
+        dataIndex: "description",
+        key: "description",
+    },
+    {
+        title: "Address",
+        dataIndex: "address",
+        key: "address",
+    },
+    {
+        title: "Zip Code",
+        dataIndex: "zipCode",
+        key: "zipCode",
+    },
+    {
+        title: "Avaiable Balance",
+        dataIndex: "avaiableBalance",
+        key: "avaiableBalance",
+    },
+    {
+        title: "Created At",
+        dataIndex: "createdAt",
+        key: "createdAt",
+        render: (_, { createdAt }) => {
+            const time = new Date(createdAt);
+            return <div>{time.toDateString()}</div>;
+        },
+    },
+    {
         title: "Action",
         key: "action",
         render: () => (
@@ -71,15 +100,15 @@ const columns: TableProps<IAdmin>["columns"] = [
     },
 ];
 
-const UsersTable: React.FC = () => {
+const SellerTable: React.FC = () => {
     const {
-        data: allUsers,
+        data: allSellers,
         // isError,
         // error,
         // isLoading,
     } = useQuery({
-        queryKey: ["allUser"],
-        queryFn: getAllUsers,
+        queryKey: ["allSellers"],
+        queryFn: getAllSellers,
     });
 
     return (
@@ -91,10 +120,10 @@ const UsersTable: React.FC = () => {
                     allUsers.map((user: IAdmin) => {
                         return <div>{user.firstName}</div>;
                     })} */}
-                <Table columns={columns} dataSource={allUsers} />
+                <Table columns={columns} dataSource={allSellers} />
             </div>
         </>
     );
 };
 
-export default UsersTable;
+export default SellerTable;
