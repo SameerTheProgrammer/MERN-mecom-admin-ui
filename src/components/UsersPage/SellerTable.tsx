@@ -1,111 +1,39 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { getAllSellers } from "../../http/apiFunction";
+import { Button, Space, Table, TableProps } from "antd";
 import { ISeller } from "../../types";
-import { Avatar, Space, Table, TableProps, Tag } from "antd";
-import { Link } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import SellerTableColumns from "./SellerTableColumn";
 
-const columns: TableProps<ISeller>["columns"] = [
-    {
-        title: "Id",
-        dataIndex: "id",
-        key: "id",
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (_text, record) => {
-            return (
-                <Link to={`/auth/seller/get/${record.id}`}>
-                    {record.avatar !== null ? (
-                        <Avatar
-                            shape="circle"
-                            size={"small"}
-                            src={record.avatar.url}
-                        />
-                    ) : (
-                        <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                        />
-                    )}{" "}
-                    {record.name}
-                </Link>
-            );
-        },
-    },
-    {
-        title: "Email",
-        dataIndex: "email",
-        key: "email",
-    },
-    {
-        title: "Phone Number",
-        dataIndex: "phoneNumber",
-        key: "phoneNumber",
-    },
-    {
-        title: "Role",
-        key: "role",
-        dataIndex: "role",
-        render: (_, { role }) => {
-            return (
-                <Tag color="success" key={role}>
-                    {role.toUpperCase()}
-                </Tag>
-            );
-        },
-    },
-    {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
-    },
-    {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
-    },
-    {
-        title: "Zip Code",
-        dataIndex: "zipCode",
-        key: "zipCode",
-    },
-    {
-        title: "Avaiable Balance",
-        dataIndex: "avaiableBalance",
-        key: "avaiableBalance",
-    },
-    {
-        title: "Created At",
-        dataIndex: "createdAt",
-        key: "createdAt",
-        render: (_, { createdAt }) => {
-            const time = new Date(createdAt);
-            return <div>{time.toDateString()}</div>;
-        },
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: () => (
-            <Space size="middle">
-                <Tag bordered={false} color="success" key="Delete">
-                    Delete
-                </Tag>
-            </Space>
-        ),
-    },
-];
+type OnChange = NonNullable<TableProps<ISeller>["onChange"]>;
+type Filters = Parameters<OnChange>[1];
+
+type GetSingle<T> = T extends (infer U)[] ? U : never;
+type Sorts = GetSingle<Parameters<OnChange>[2]>;
 
 const SellerTable: React.FC = () => {
+    const [filteredInfo, setFilteredInfo] = useState<Filters>({});
+    const [sortedInfo, setSortedInfo] = useState<Sorts>({});
+
+    const handleChange: OnChange = (_pagination, filters, sorter) => {
+        setFilteredInfo(filters);
+        setSortedInfo(sorter as Sorts);
+    };
+
+    const clearFilters = () => {
+        setFilteredInfo({});
+    };
+
+    const clearAll = () => {
+        setFilteredInfo({});
+        setSortedInfo({});
+    };
+
     const {
         data: allSellers,
-        // isError,
-        // error,
-        // isLoading,
+        isError,
+        error,
+        isLoading,
     } = useQuery({
         queryKey: ["allSellers"],
         queryFn: getAllSellers,
@@ -113,14 +41,22 @@ const SellerTable: React.FC = () => {
 
     return (
         <>
+            <Space style={{ margin: "16px 0 0 0" }}>
+                <Button onClick={clearFilters}>Clear filters</Button>
+                <Button onClick={clearAll}>Clear filters and sorters</Button>
+            </Space>
             <div style={{ marginTop: "24px" }}>
-                {/* {isError && <div>{error.message}</div>}
-                {isLoading && <div>Loading....</div>}
-                {allUsers &&
-                    allUsers.map((user: IAdmin) => {
-                        return <div>{user.firstName}</div>;
-                    })} */}
-                <Table columns={columns} dataSource={allSellers} />
+                {isError && <div>{error.message}</div>}
+                <Table
+                    columns={SellerTableColumns({ filteredInfo, sortedInfo })}
+                    dataSource={allSellers}
+                    size="small"
+                    scroll={{ x: 1500, y: 200 }}
+                    virtual
+                    rowKey={"id"}
+                    loading={isLoading}
+                    onChange={handleChange}
+                />
             </div>
         </>
     );
