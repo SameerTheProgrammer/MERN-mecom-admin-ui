@@ -1,11 +1,11 @@
-import { Button, Card, Col, Form, Input, Row, Select } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Card, Col, Form, Input, Row, Select } from "antd";
 
 interface FilterComponentProps {
     setRole: React.Dispatch<React.SetStateAction<string>>;
+    children: React.ReactNode;
 }
 
-const Filter: React.FC<FilterComponentProps> = ({ setRole }) => {
+const Filter: React.FC<FilterComponentProps> = ({ setRole, children }) => {
     const onFilterChange = (e: string) => {
         setRole(e);
     };
@@ -90,13 +90,7 @@ const Filter: React.FC<FilterComponentProps> = ({ setRole }) => {
                             height: "max-content",
                         }}
                     >
-                        <Button
-                            type="primary"
-                            icon={<PlusOutlined />}
-                            // onClick={() => setDrawerOpen(true)}
-                        >
-                            Add Seller
-                        </Button>
+                        {children}
                     </Col>
                 </Row>
             </Card>
