@@ -1,15 +1,20 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
     Button,
     Card,
     Col,
     Drawer,
     Form,
+    GetProp,
     Input,
+    Modal,
     Row,
     Space,
     Switch,
     Upload,
+    UploadFile,
+    UploadProps,
+    message,
     theme,
 } from "antd";
 import { InboxOutlined, PlusOutlined } from "@ant-design/icons";
@@ -20,10 +25,26 @@ interface NewSellerFormDrawerProps {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
+const getBase64 = (file: FileType): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
+
 const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
     drawerOpen,
     setDrawerOpen,
 }) => {
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState("");
+    const [previewTitle, setPreviewTitle] = useState("");
+
+    const handleCancel = () => setPreviewOpen(false);
+
     const onClose = () => {
         setDrawerOpen(false);
     };
@@ -31,6 +52,52 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
     const {
         token: { colorBgLayout },
     } = theme.useToken();
+
+    const props: UploadProps = {
+        name: "file",
+        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+        headers: {
+            authorization: "authorization-text",
+        },
+        onChange(info) {
+            if (info.file.status === "done") {
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === "error") {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        beforeUpload: (file) => {
+            const isPNG =
+                file.type === "image/png" ||
+                file.type === "image/jpg" ||
+                file.type === "image/jpeg";
+            if (!isPNG) {
+                message.error(`${file.name} is not in correct image format`);
+            }
+            return isPNG || Upload.LIST_IGNORE;
+        },
+        progress: {
+            strokeColor: {
+                "0%": "#108ee9",
+                "100%": "#87d068",
+            },
+            strokeWidth: 3,
+            format: (percent) =>
+                percent && `${parseFloat(percent.toFixed(2))}%`,
+        },
+        onPreview: async (file: UploadFile) => {
+            if (!file.url && !file.preview) {
+                file.preview = await getBase64(file.originFileObj as FileType);
+            }
+
+            setPreviewImage(file.url || (file.preview as string));
+            setPreviewOpen(true);
+            setPreviewTitle(
+                file.name ||
+                    file.url!.substring(file.url!.lastIndexOf("/") + 1),
+            );
+        },
+    };
 
     return (
         <>
@@ -50,6 +117,18 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
             >
                 <Form layout="vertical">
                     <Row gutter={[16, 16]}>
+                        <Modal
+                            open={previewOpen}
+                            title={previewTitle}
+                            footer={null}
+                            onCancel={handleCancel}
+                        >
+                            <img
+                                alt="example"
+                                style={{ width: "100%" }}
+                                src={previewImage}
+                            />
+                        </Modal>
                         <Col span={24}>
                             <Card bordered={false} title={"Basic info"}>
                                 <Row>
@@ -274,7 +353,6 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                 rotationSlider
                                                 zoomSlider
                                                 showReset
-                                                aspectSlider
                                                 quality={1}
                                                 cropShape="round"
                                                 modalTitle="Crop the image"
@@ -285,6 +363,7 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                     accept=".png , .jpeg , .jpg"
                                                     listType="picture-circle"
                                                     maxCount={1}
+                                                    {...props}
                                                 >
                                                     <button
                                                         style={{
@@ -324,6 +403,7 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                     accept=".png , .jpeg , .jpg"
                                                     listType="picture"
                                                     maxCount={1}
+                                                    {...props}
                                                 >
                                                     <p className="ant-upload-drag-icon">
                                                         <InboxOutlined />
