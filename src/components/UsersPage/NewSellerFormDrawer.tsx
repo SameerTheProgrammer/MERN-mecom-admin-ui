@@ -58,6 +58,22 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                             label="Name"
                                             required
                                             name="name"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "Name is required",
+                                                },
+                                                {
+                                                    min: 2,
+                                                    message:
+                                                        "Name should be between least 2 chars and maximum 100 chars",
+                                                },
+                                                {
+                                                    max: 100,
+                                                    message:
+                                                        "Name should be between least 2 chars and maximum 100 chars",
+                                                },
+                                            ]}
                                         >
                                             <Input />
                                         </Form.Item>
@@ -69,6 +85,18 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                     label="Email"
                                                     required
                                                     name="email"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Email is required",
+                                                        },
+                                                        {
+                                                            type: "email",
+                                                            message:
+                                                                "Invalid email",
+                                                        },
+                                                    ]}
                                                 >
                                                     <Input />
                                                 </Form.Item>
@@ -78,6 +106,13 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                     label="Phone Number"
                                                     required
                                                     name="phoneNumber"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Phone is required",
+                                                        },
+                                                    ]}
                                                 >
                                                     <Input />
                                                 </Form.Item>
@@ -98,6 +133,13 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                     label="Password"
                                                     hasFeedback
                                                     required
+                                                    rules={[
+                                                        {
+                                                            min: 10,
+                                                            message:
+                                                                "Password should be consists of atleast 10 character",
+                                                        },
+                                                    ]}
                                                 >
                                                     <Input.Password />
                                                 </Form.Item>
@@ -153,6 +195,13 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                         <Form.Item
                                             label="Description"
                                             name="description"
+                                            rules={[
+                                                {
+                                                    max: 3000,
+                                                    message:
+                                                        "Description should be only 3000 characters",
+                                                },
+                                            ]}
                                         >
                                             <Input.TextArea
                                                 showCount
@@ -171,6 +220,18 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                     label="Address"
                                                     required
                                                     name="address"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Address is required",
+                                                        },
+                                                        {
+                                                            max: 255,
+                                                            message:
+                                                                "Address should be only 3000 characters",
+                                                        },
+                                                    ]}
                                                 >
                                                     <Input.TextArea
                                                         showCount
@@ -183,6 +244,18 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                     label="Zip Code"
                                                     required
                                                     name="zipCode"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Zip Code is requiered",
+                                                        },
+                                                        {
+                                                            type: "integer",
+                                                            message:
+                                                                "invalid zip code",
+                                                        },
+                                                    ]}
                                                 >
                                                     <Input />
                                                 </Form.Item>
