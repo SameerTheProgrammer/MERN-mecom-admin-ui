@@ -13,7 +13,7 @@ import {
     theme,
 } from "antd";
 import { InboxOutlined, PlusOutlined } from "@ant-design/icons";
-// import ImgCrop from "antd-img-crop";
+import ImgCrop from "antd-img-crop";
 
 interface NewSellerFormDrawerProps {
     drawerOpen: boolean;
@@ -270,58 +270,74 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                 <Row gutter={16}>
                                     <Col span={12}>
                                         <Form.Item label="Logo" name="logo">
-                                            {/* <ImgCrop> */}
-                                            <Upload
-                                                name="logo"
-                                                action="/upload.do"
-                                                accept=".png , .jpeg , .jpg"
-                                                listType="picture-circle"
-                                                maxCount={1}
+                                            <ImgCrop
+                                                rotationSlider
+                                                zoomSlider
+                                                showReset
+                                                aspectSlider
+                                                quality={1}
+                                                cropShape="round"
+                                                modalTitle="Crop the image"
                                             >
-                                                <button
-                                                    style={{
-                                                        border: 0,
-                                                        background: "none",
-                                                    }}
-                                                    type="button"
+                                                <Upload
+                                                    name="logo"
+                                                    action="/upload.do"
+                                                    accept=".png , .jpeg , .jpg"
+                                                    listType="picture-circle"
+                                                    maxCount={1}
                                                 >
-                                                    <PlusOutlined />
-                                                    <div
+                                                    <button
                                                         style={{
-                                                            marginTop: 8,
+                                                            border: 0,
+                                                            background: "none",
                                                         }}
+                                                        type="button"
                                                     >
-                                                        Upload
-                                                    </div>
-                                                </button>
-                                            </Upload>
-
-                                            {/* </ImgCrop> */}
+                                                        <PlusOutlined />
+                                                        <div
+                                                            style={{
+                                                                marginTop: 8,
+                                                            }}
+                                                        >
+                                                            Upload
+                                                        </div>
+                                                    </button>
+                                                </Upload>
+                                            </ImgCrop>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
                                         <Form.Item label="Banner" name="banner">
-                                            {/* <ImgCrop> */}
-                                            <Upload.Dragger
-                                                name="logo"
-                                                action="/upload.do"
-                                                // fileList={}
-                                                // accept="png"
-                                                listType="picture"
-                                                maxCount={1}
+                                            <ImgCrop
+                                                rotationSlider
+                                                zoomSlider
+                                                showReset
+                                                aspectSlider
+                                                quality={1}
+                                                cropShape="rect"
+                                                modalTitle="Crop the image"
+                                                aspect={2}
                                             >
-                                                <p className="ant-upload-drag-icon">
-                                                    <InboxOutlined />
-                                                </p>
-                                                <p className="ant-upload-text">
-                                                    Click or drag file to this
-                                                    area to upload
-                                                </p>
-                                                <p className="ant-upload-hint">
-                                                    Support for a single upload.
-                                                </p>
-                                            </Upload.Dragger>
-                                            {/* </ImgCrop> */}
+                                                <Upload.Dragger
+                                                    name="logo"
+                                                    action="/upload.do"
+                                                    accept=".png , .jpeg , .jpg"
+                                                    listType="picture"
+                                                    maxCount={1}
+                                                >
+                                                    <p className="ant-upload-drag-icon">
+                                                        <InboxOutlined />
+                                                    </p>
+                                                    <p className="ant-upload-text">
+                                                        Click or drag file to
+                                                        this area to upload
+                                                    </p>
+                                                    <p className="ant-upload-hint">
+                                                        Support for a single
+                                                        upload.
+                                                    </p>
+                                                </Upload.Dragger>
+                                            </ImgCrop>
                                         </Form.Item>
                                     </Col>
                                 </Row>
