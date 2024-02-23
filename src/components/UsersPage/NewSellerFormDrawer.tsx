@@ -8,8 +8,12 @@ import {
     Input,
     Row,
     Space,
+    Switch,
+    Upload,
     theme,
 } from "antd";
+import { InboxOutlined, PlusOutlined } from "@ant-design/icons";
+// import ImgCrop from "antd-img-crop";
 
 interface NewSellerFormDrawerProps {
     drawerOpen: boolean;
@@ -47,11 +51,7 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                 <Form layout="vertical">
                     <Row gutter={[16, 16]}>
                         <Col span={24}>
-                            <Card
-                                bordered={false}
-                                title={"Basic info"}
-                                // style={{ width: 300 }}
-                            >
+                            <Card bordered={false} title={"Basic info"}>
                                 <Row>
                                     <Col span={24}>
                                         <Form.Item
@@ -88,21 +88,79 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                             </Card>
                         </Col>
                         <Col span={24}>
-                            <Card
-                                bordered={false}
-                                title={"Additional info"}
-                                // style={{ width: 300 }}
-                            >
+                            <Card bordered={false} title={"Security info"}>
+                                <Row>
+                                    <Col span={24}>
+                                        <Row gutter={16}>
+                                            <Col span={12}>
+                                                <Form.Item
+                                                    name="password"
+                                                    label="Password"
+                                                    hasFeedback
+                                                    required
+                                                >
+                                                    <Input.Password />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={12}>
+                                                <Form.Item
+                                                    name="confirm"
+                                                    label="Confirm Password"
+                                                    dependencies={["password"]}
+                                                    hasFeedback
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Please confirm your password!",
+                                                        },
+                                                        ({
+                                                            getFieldValue,
+                                                        }) => ({
+                                                            validator(
+                                                                _,
+                                                                value,
+                                                            ) {
+                                                                if (
+                                                                    !value ||
+                                                                    getFieldValue(
+                                                                        "password",
+                                                                    ) === value
+                                                                ) {
+                                                                    return Promise.resolve();
+                                                                }
+                                                                return Promise.reject(
+                                                                    new Error(
+                                                                        "The new password that you entered do not match!",
+                                                                    ),
+                                                                );
+                                                            },
+                                                        }),
+                                                    ]}
+                                                >
+                                                    <Input.Password />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </Col>
+                        <Col span={24}>
+                            <Card bordered={false} title={"Additional info"}>
                                 <Row>
                                     <Col span={24}>
                                         <Form.Item
                                             label="Description"
-                                            required
                                             name="description"
                                         >
                                             <Input.TextArea
                                                 showCount
-                                                maxLength={255}
+                                                maxLength={3000}
+                                                autoSize={{
+                                                    minRows: 3,
+                                                    maxRows: 15,
+                                                }}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -110,23 +168,104 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                         <Row gutter={16}>
                                             <Col span={12}>
                                                 <Form.Item
-                                                    label="Email"
+                                                    label="Address"
                                                     required
-                                                    name="email"
+                                                    name="address"
                                                 >
-                                                    <Input />
+                                                    <Input.TextArea
+                                                        showCount
+                                                        maxLength={255}
+                                                    />
                                                 </Form.Item>
                                             </Col>
                                             <Col span={12}>
                                                 <Form.Item
-                                                    label="Phone Number"
+                                                    label="Zip Code"
                                                     required
-                                                    name="phoneNumber"
+                                                    name="zipCode"
                                                 >
                                                     <Input />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </Col>
+                        <Col span={24}>
+                            <Card bordered={false} title={"Images"}>
+                                <Row gutter={16}>
+                                    <Col span={12}>
+                                        <Form.Item label="Logo" name="logo">
+                                            {/* <ImgCrop> */}
+                                            <Upload
+                                                name="logo"
+                                                action="/upload.do"
+                                                accept=".png , .jpeg , .jpg"
+                                                listType="picture-circle"
+                                                maxCount={1}
+                                            >
+                                                <button
+                                                    style={{
+                                                        border: 0,
+                                                        background: "none",
+                                                    }}
+                                                    type="button"
+                                                >
+                                                    <PlusOutlined />
+                                                    <div
+                                                        style={{
+                                                            marginTop: 8,
+                                                        }}
+                                                    >
+                                                        Upload
+                                                    </div>
+                                                </button>
+                                            </Upload>
+
+                                            {/* </ImgCrop> */}
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item label="Banner" name="banner">
+                                            {/* <ImgCrop> */}
+                                            <Upload.Dragger
+                                                name="logo"
+                                                action="/upload.do"
+                                                // fileList={}
+                                                // accept="png"
+                                                listType="picture"
+                                                maxCount={1}
+                                            >
+                                                <p className="ant-upload-drag-icon">
+                                                    <InboxOutlined />
+                                                </p>
+                                                <p className="ant-upload-text">
+                                                    Click or drag file to this
+                                                    area to upload
+                                                </p>
+                                                <p className="ant-upload-hint">
+                                                    Support for a single upload.
+                                                </p>
+                                            </Upload.Dragger>
+                                            {/* </ImgCrop> */}
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </Col>
+                        <Col span={24}>
+                            <Card bordered={false} title={"Other properties"}>
+                                <Row>
+                                    <Col span={24}>
+                                        <Form.Item name="description">
+                                            <Form.Item name="ban" label="Ban">
+                                                <Switch
+                                                    unCheckedChildren="ban"
+                                                    checkedChildren="active"
+                                                />
+                                            </Form.Item>
+                                        </Form.Item>
                                     </Col>
                                 </Row>
                             </Card>
