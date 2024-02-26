@@ -5,6 +5,7 @@ import {
     getAllSellersApi,
     loginAdminApi,
     selfDataAdminApi,
+    createNewSellerApi,
 } from "./api";
 
 export const loginAdmin = async (credentials: AdminLoginCredentials) => {
@@ -28,5 +29,10 @@ export const getAllCustomers = async () => {
 
 export const getAllSellers = async () => {
     const { data } = await getAllSellersApi();
+    return data;
+};
+
+export const createNewSeller = async (sellerData: FormData) => {
+    const { data } = await createNewSellerApi(sellerData);
     return data;
 };

@@ -51,7 +51,7 @@ const SellerTable: React.FC = () => {
                     columns={SellerTableColumns({ filteredInfo, sortedInfo })}
                     dataSource={allSellers}
                     size="small"
-                    scroll={{ x: 1500, y: 200 }}
+                    scroll={{ x: 1500 }}
                     virtual
                     rowKey={"id"}
                     loading={isLoading}

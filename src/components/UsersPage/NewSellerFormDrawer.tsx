@@ -7,6 +7,7 @@ import {
     Form,
     GetProp,
     Input,
+    InputNumber,
     Modal,
     Row,
     Space,
@@ -19,6 +20,9 @@ import {
 } from "antd";
 import { InboxOutlined, PlusOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
+import { useMutation } from "@tanstack/react-query";
+import { createNewSeller } from "../../http/apiFunction";
+import { IHttpError } from "../../types";
 
 interface NewSellerFormDrawerProps {
     drawerOpen: boolean;
@@ -42,10 +46,17 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
+    const [messageApi, contextHolder] = message.useMessage();
 
-    const handleCancel = () => setPreviewOpen(false);
+    const [form] = Form.useForm();
+
+    const handleCancel = () => {
+        form.resetFields();
+        setPreviewOpen(false);
+    };
 
     const onClose = () => {
+        form.resetFields();
         setDrawerOpen(false);
     };
 
@@ -53,38 +64,64 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
         token: { colorBgLayout },
     } = theme.useToken();
 
+    const { mutate, isPending } = useMutation({
+        mutationKey: ["newSeller"],
+        mutationFn: createNewSeller,
+        onSuccess: async () => {
+            message.destroy("createNewSeller");
+            messageApi.open({
+                key: "createNewSeller",
+                type: "success",
+                content: "Seller created successfully",
+                duration: 2,
+            });
+            form.resetFields();
+        },
+        onError: async (error) => {
+            message.destroy("createNewSeller");
+            messageApi.open({
+                key: "createNewSeller",
+                type: "error",
+                content: (error as IHttpError).response.data.errors[0].msg,
+                duration: 3,
+            });
+        },
+    });
+
+    const onHandleSubmit = async () => {
+        try {
+            messageApi.open({
+                key: "createNewSeller",
+                type: "loading",
+                content: "Loading...",
+                duration: 10,
+            });
+
+            await form.validateFields();
+            const data = form.getFieldsValue();
+
+            const formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("password", data.password);
+            formData.append("email", data.email);
+            formData.append("phoneNumber", data.phoneNumber);
+            formData.append("description", data.description);
+            formData.append("address", data.address);
+            formData.append("zipCode", data.zipCode);
+            formData.append("ban", data.ban);
+            formData.append("logo", data.logo || null);
+            formData.append("banner", data.banner || null);
+
+            mutate(formData);
+            message.destroy("createNewSeller");
+        } catch (error) {
+            message.error("Failed to create seller");
+            message.destroy("createNewSeller");
+        }
+    };
+
     const props: UploadProps = {
         name: "file",
-        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-        headers: {
-            authorization: "authorization-text",
-        },
-        onChange(info) {
-            if (info.file.status === "done") {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === "error") {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        beforeUpload: (file) => {
-            const isPNG =
-                file.type === "image/png" ||
-                file.type === "image/jpg" ||
-                file.type === "image/jpeg";
-            if (!isPNG) {
-                message.error(`${file.name} is not in correct image format`);
-            }
-            return isPNG || Upload.LIST_IGNORE;
-        },
-        progress: {
-            strokeColor: {
-                "0%": "#108ee9",
-                "100%": "#87d068",
-            },
-            strokeWidth: 3,
-            format: (percent) =>
-                percent && `${parseFloat(percent.toFixed(2))}%`,
-        },
         onPreview: async (file: UploadFile) => {
             if (!file.url && !file.preview) {
                 file.preview = await getBase64(file.originFileObj as FileType);
@@ -101,6 +138,7 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
 
     return (
         <>
+            {contextHolder}
             <Drawer
                 width={720}
                 title="Create a new seller account"
@@ -111,11 +149,21 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                 extra={
                     <Space>
                         <Button onClick={onClose}>Cancel</Button>
-                        <Button type="primary">Submit</Button>
+                        <Button
+                            type="primary"
+                            onClick={onHandleSubmit}
+                            loading={isPending}
+                        >
+                            Submit
+                        </Button>
                     </Space>
                 }
             >
-                <Form layout="vertical">
+                <Form
+                    layout="vertical"
+                    form={form}
+                    initialValues={{ ban: false, description: "" }}
+                >
                     <Row gutter={[16, 16]}>
                         <Modal
                             open={previewOpen}
@@ -310,6 +358,11 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                             message:
                                                                 "Address should be only 3000 characters",
                                                         },
+                                                        {
+                                                            min: 10,
+                                                            message:
+                                                                "Address should be consists atleast 10 characters",
+                                                        },
                                                     ]}
                                                 >
                                                     <Input.TextArea
@@ -327,16 +380,20 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                         {
                                                             required: true,
                                                             message:
-                                                                "Zip Code is requiered",
+                                                                "Zip Code is required",
                                                         },
                                                         {
-                                                            type: "integer",
+                                                            type: "number",
                                                             message:
                                                                 "invalid zip code",
                                                         },
                                                     ]}
                                                 >
-                                                    <Input />
+                                                    <InputNumber
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                    />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -359,11 +416,16 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                             >
                                                 <Upload
                                                     name="logo"
-                                                    action="/upload.do"
                                                     accept=".png , .jpeg , .jpg"
                                                     listType="picture-circle"
                                                     maxCount={1}
                                                     {...props}
+                                                    onChange={(info) => {
+                                                        form.setFieldsValue({
+                                                            logo: info.file
+                                                                .originFileObj,
+                                                        });
+                                                    }}
                                                 >
                                                     <button
                                                         style={{
@@ -398,12 +460,17 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                                                 aspect={2}
                                             >
                                                 <Upload.Dragger
-                                                    name="logo"
-                                                    action="/upload.do"
+                                                    name="banner"
                                                     accept=".png , .jpeg , .jpg"
                                                     listType="picture"
                                                     maxCount={1}
                                                     {...props}
+                                                    onChange={(info) => {
+                                                        form.setFieldsValue({
+                                                            banner: info.file
+                                                                .originFileObj,
+                                                        });
+                                                    }}
                                                 >
                                                     <p className="ant-upload-drag-icon">
                                                         <InboxOutlined />
@@ -427,13 +494,11 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                             <Card bordered={false} title={"Other properties"}>
                                 <Row>
                                     <Col span={24}>
-                                        <Form.Item name="description">
-                                            <Form.Item name="ban" label="Ban">
-                                                <Switch
-                                                    unCheckedChildren="ban"
-                                                    checkedChildren="active"
-                                                />
-                                            </Form.Item>
+                                        <Form.Item name="ban" label="Ban">
+                                            <Switch
+                                                unCheckedChildren="ban"
+                                                checkedChildren="active"
+                                            />
                                         </Form.Item>
                                     </Col>
                                 </Row>

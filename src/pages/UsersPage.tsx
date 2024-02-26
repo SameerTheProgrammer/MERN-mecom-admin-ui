@@ -9,6 +9,7 @@ import NewSellerFormDrawer from "../components/UsersPage/NewSellerFormDrawer";
 const UsersPage = () => {
     const [role, setRole] = useState("customer");
     const [drawerOpen, setDrawerOpen] = useState(false);
+
     return (
         <>
             <Filter setRole={setRole}>
