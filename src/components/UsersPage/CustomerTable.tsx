@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllCustomers } from "../../http/apiFunction";
 import { ICustomer } from "../../types";
 import CustomerTableColumns from "./CustomerTableColumn";
+import { CURRENT_PAGE, PER_PAGE } from "../../constants";
 
 type OnChange = NonNullable<TableProps<ICustomer>["onChange"]>;
 type Filters = Parameters<OnChange>[1];
@@ -14,6 +15,10 @@ type Sorts = GetSingle<Parameters<OnChange>[2]>;
 const CustomerTable: React.FC = () => {
     const [filteredInfo, setFilteredInfo] = useState<Filters>({});
     const [sortedInfo, setSortedInfo] = useState<Sorts>({});
+    const [queryParams, setQueryParams] = useState({
+        perPage: PER_PAGE,
+        currentPage: CURRENT_PAGE,
+    });
 
     const handleChange: OnChange = (_pagination, filters, sorter) => {
         setFilteredInfo(filters);
@@ -35,8 +40,13 @@ const CustomerTable: React.FC = () => {
         error,
         isLoading,
     } = useQuery({
-        queryKey: ["allCustomers"],
-        queryFn: getAllCustomers,
+        queryKey: ["allCustomers", queryParams],
+        queryFn: () => {
+            const queryString = new URLSearchParams(
+                queryParams as unknown as Record<string, string>,
+            ).toString();
+            return getAllCustomers(queryString);
+        },
     });
 
     return (
@@ -49,11 +59,25 @@ const CustomerTable: React.FC = () => {
                 {isError && <div>{error.message}</div>}
                 <Table
                     columns={CustomerTableColumns({ filteredInfo, sortedInfo })}
-                    dataSource={allCustomers}
+                    dataSource={allCustomers?.data}
                     onChange={handleChange}
                     size="small"
                     rowKey="id"
                     loading={isLoading}
+                    pagination={{
+                        total: allCustomers?.total,
+                        pageSize: queryParams.perPage,
+                        current: queryParams.currentPage,
+                        onChange: (page, pageSize) => {
+                            setQueryParams((prev) => {
+                                return {
+                                    ...prev,
+                                    perPage: pageSize || PER_PAGE,
+                                    currentPage: page || CURRENT_PAGE,
+                                };
+                            });
+                        },
+                    }}
                 />
             </div>
         </>

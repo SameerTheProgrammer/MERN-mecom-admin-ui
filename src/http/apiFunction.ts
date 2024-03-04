@@ -22,8 +22,8 @@ export const adminLogout = async () => {
     await adminLogoutApi();
 };
 
-export const getAllCustomers = async () => {
-    const { data } = await getAllCustomersApi();
+export const getAllCustomers = async (queryString: string) => {
+    const { data } = await getAllCustomersApi(queryString);
     return data;
 };
 

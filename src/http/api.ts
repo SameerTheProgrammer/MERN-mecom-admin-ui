@@ -9,15 +9,14 @@ export const selfDataAdminApi = () => api.get("/admin/self");
 
 export const adminLogoutApi = () => api.post("/admin/logout");
 
-export const getAllCustomersApi = () => api.post("/auth/user/getAll");
+export const getAllCustomersApi = (queryString: string) =>
+    api.post(`/auth/user/getAll?${queryString}`);
 
 export const getAllSellersApi = () => api.post("/auth/seller/getAll");
 
 export const createNewSellerApi = (sellerData: FormData) =>
-    api.post("/auth/seller/create", sellerData);
-
-// const response = await axios.post("/api/sellers", formData, {
-//     headers: {
-//         "Content-Type": "multipart/form-data",
-//     },
-// });
+    api.post("/auth/seller/create", sellerData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
