@@ -27,8 +27,8 @@ export const getAllCustomers = async (queryString: string) => {
     return data;
 };
 
-export const getAllSellers = async () => {
-    const { data } = await getAllSellersApi();
+export const getAllSellers = async (queryString: string) => {
+    const { data } = await getAllSellersApi(queryString);
     return data;
 };
 

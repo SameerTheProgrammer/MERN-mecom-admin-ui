@@ -12,7 +12,8 @@ export const adminLogoutApi = () => api.post("/admin/logout");
 export const getAllCustomersApi = (queryString: string) =>
     api.post(`/auth/user/getAll?${queryString}`);
 
-export const getAllSellersApi = () => api.post("/auth/seller/getAll");
+export const getAllSellersApi = (queryString: string) =>
+    api.post(`/auth/seller/getAll?${queryString}`);
 
 export const createNewSellerApi = (sellerData: FormData) =>
     api.post("/auth/seller/create", sellerData, {
