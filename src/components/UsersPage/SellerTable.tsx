@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { getAllSellers } from "../../http/apiFunction";
 import { Button, Space, Table, TableProps } from "antd";
@@ -47,6 +47,7 @@ const SellerTable: React.FC = () => {
             ).toString();
             return getAllSellers(queryString);
         },
+        placeholderData: keepPreviousData,
     });
 
     return (

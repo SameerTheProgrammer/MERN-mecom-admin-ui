@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Space, Table, TableProps } from "antd";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getAllCustomers } from "../../http/apiFunction";
 import { ICustomer } from "../../types";
 import CustomerTableColumns from "./CustomerTableColumn";
@@ -47,6 +47,7 @@ const CustomerTable: React.FC = () => {
             ).toString();
             return getAllCustomers(queryString);
         },
+        placeholderData: keepPreviousData,
     });
 
     return (
