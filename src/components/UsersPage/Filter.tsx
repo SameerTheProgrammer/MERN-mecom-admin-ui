@@ -1,14 +1,10 @@
 import { Card, Col, Form, Input, Row, Select } from "antd";
 
 interface FilterComponentProps {
-    setRole: React.Dispatch<React.SetStateAction<string>>;
     children: React.ReactNode;
 }
 
-const Filter: React.FC<FilterComponentProps> = ({ setRole, children }) => {
-    const onFilterChange = (e: string) => {
-        setRole(e);
-    };
+const Filter: React.FC<FilterComponentProps> = ({ children }) => {
     return (
         <>
             <Card>
@@ -40,21 +36,28 @@ const Filter: React.FC<FilterComponentProps> = ({ setRole, children }) => {
                                     height: "fit-content",
                                 }}
                             >
-                                <Select
-                                    style={{ width: "100%" }}
-                                    placeholder="Status"
-                                    defaultValue={"all"}
+                                <Form.Item
+                                    name="status"
+                                    style={{
+                                        margin: 0,
+                                    }}
                                 >
-                                    <Select.Option value="all">
-                                        All
-                                    </Select.Option>
-                                    <Select.Option value="ban">
-                                        Ban
-                                    </Select.Option>
-                                    <Select.Option value="active">
-                                        Active
-                                    </Select.Option>
-                                </Select>
+                                    <Select
+                                        style={{ width: "100%" }}
+                                        placeholder="Status"
+                                        defaultValue={"all"}
+                                    >
+                                        <Select.Option value="all">
+                                            All
+                                        </Select.Option>
+                                        <Select.Option value="ban">
+                                            Ban
+                                        </Select.Option>
+                                        <Select.Option value="active">
+                                            Active
+                                        </Select.Option>
+                                    </Select>
+                                </Form.Item>
                             </Col>
                             <Col span={8}>
                                 <Form.Item
@@ -67,9 +70,6 @@ const Filter: React.FC<FilterComponentProps> = ({ setRole, children }) => {
                                         style={{ width: "100%" }}
                                         placeholder="Select role"
                                         defaultValue={"customer"}
-                                        onChange={(selectedItem) =>
-                                            onFilterChange(selectedItem)
-                                        }
                                     >
                                         <Select.Option value="seller">
                                             Seller

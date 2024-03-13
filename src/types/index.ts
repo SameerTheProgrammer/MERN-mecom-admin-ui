@@ -4,6 +4,11 @@ export type logoTypes = {
     height: string;
 };
 
+export type FieldData = {
+    name: string[];
+    value?: string;
+};
+
 export type AdminLoginCredentials = {
     email: string;
     password: string;

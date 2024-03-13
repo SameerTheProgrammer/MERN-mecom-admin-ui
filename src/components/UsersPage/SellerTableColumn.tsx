@@ -1,18 +1,9 @@
 import { Avatar, Space, TableProps, Tag, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
-import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { ISeller } from "../../types";
 
-interface SellerTableColumnsProps {
-    filteredInfo: Record<string, FilterValue | null>;
-    sortedInfo: SorterResult<ISeller>;
-}
-
-const SellerTableColumns = ({
-    filteredInfo,
-    sortedInfo,
-}: SellerTableColumnsProps) => {
+const SellerTableColumns = () => {
     const columns: TableProps<ISeller>["columns"] = [
         {
             title: "Id",
@@ -21,19 +12,12 @@ const SellerTableColumns = ({
             sorter: true,
             rowScope: "row",
             fixed: "left",
-            // filterSearch: true,
-            filteredValue: filteredInfo.id || null,
-            sortOrder: sortedInfo.columnKey === "id" ? sortedInfo.order : null,
         },
         {
             title: "Name",
             dataIndex: "name",
             key: "name",
             sorter: true,
-            // filterSearch: true,
-            filteredValue: filteredInfo.id || null,
-            sortOrder:
-                sortedInfo.columnKey === "name" ? sortedInfo.order : null,
             render: (_text, record) => {
                 return (
                     <Link to={`/auth/seller/get/${record.id}`}>
@@ -119,26 +103,12 @@ const SellerTableColumns = ({
             dataIndex: "avaiableBalance",
             key: "avaiableBalance",
             sorter: true,
-            // filterSearch: true,
-            filteredValue: filteredInfo.id || null,
-            sortOrder:
-                sortedInfo.columnKey === "avaiableBalance"
-                    ? sortedInfo.order
-                    : null,
         },
         {
             title: "Created At",
             dataIndex: "createdAt",
             key: "createdAt",
             sorter: true,
-            filteredValue: filteredInfo.id || null,
-            sortOrder:
-                sortedInfo.columnKey === "createdAt" ? sortedInfo.order : null,
-            render: (_, { createdAt }) => {
-                const time = new Date(createdAt);
-                return <div>{time.toDateString()}</div>;
-            },
-            // filterSearch: true,
         },
         {
             title: "Action",

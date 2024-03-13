@@ -2,17 +2,8 @@ import { Avatar, Space, TableProps, Tag } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { ICustomer } from "../../types";
-import { FilterValue, SorterResult } from "antd/es/table/interface";
 
-interface CustomerTableColumnsProps {
-    filteredInfo: Record<string, FilterValue | null>;
-    sortedInfo: SorterResult<ICustomer>;
-}
-
-const CustomerTableColumns = ({
-    filteredInfo,
-    sortedInfo,
-}: CustomerTableColumnsProps) => {
+const CustomerTableColumns = () => {
     const columns: TableProps<ICustomer>["columns"] = [
         {
             title: "Id",
@@ -20,19 +11,12 @@ const CustomerTableColumns = ({
             key: "id",
             sorter: true,
             rowScope: "row",
-            // filterSearch: true,
-            filteredValue: filteredInfo.id || null,
-            sortOrder: sortedInfo.columnKey === "id" ? sortedInfo.order : null,
         },
         {
             title: "Name",
             dataIndex: "name",
             key: "name",
             sorter: true,
-            // filterSearch: true,
-            filteredValue: filteredInfo.name || null,
-            sortOrder:
-                sortedInfo.columnKey === "name" ? sortedInfo.order : null,
             render: (_text, record) => (
                 <Link to={`/user/get/${record.id}`}>
                     <Space>
@@ -97,9 +81,6 @@ const CustomerTableColumns = ({
             sorter: (a, b) =>
                 new Date(a.createdAt).getTime() -
                 new Date(b.createdAt).getTime(),
-            // filterSearch: true,
-            filteredValue: filteredInfo.id || null,
-            sortOrder: sortedInfo.columnKey === "id" ? sortedInfo.order : null,
         },
         {
             title: "Action",
