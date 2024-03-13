@@ -1,19 +1,20 @@
 import { Button, Form, Table } from "antd";
 import Filter from "./../components/UsersPage/Filter";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import NewSellerFormDrawer from "../components/UsersPage/NewSellerFormDrawer";
-import { FieldData } from "../types";
+import { FieldData, TQueryParams } from "../types";
 import { getAllCustomers, getAllSellers } from "../http/apiFunction";
 import { CURRENT_PAGE, PER_PAGE } from "../constants";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import SellerTableColumns from "../components/UsersPage/SellerTableColumn";
 import CustomerTableColumns from "../components/UsersPage/CustomerTableColumn";
+import { debounce } from "lodash";
 
 const UsersPage = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [filterForm] = Form.useForm();
-    const [queryParams, setQueryParams] = useState({
+    const [queryParams, setQueryParams] = useState<TQueryParams>({
         perPage: PER_PAGE,
         currentPage: CURRENT_PAGE,
         q: "",
@@ -45,6 +46,12 @@ const UsersPage = () => {
         placeholderData: keepPreviousData,
     });
 
+    const debounceQUpdate = useMemo(() => {
+        return debounce((value: string | undefined) => {
+            setQueryParams((prev) => ({ ...prev, q: value }));
+        }, 500);
+    }, []);
+
     const onFilterChange = (changedFields: FieldData[]) => {
         const changeFilterFields = changedFields
             .map((item) => {
@@ -53,7 +60,12 @@ const UsersPage = () => {
             .reduce((acc, item) => {
                 return { ...acc, ...item };
             });
-        setQueryParams((prev) => ({ ...prev, ...changeFilterFields }));
+
+        if ("q" in changeFilterFields) {
+            debounceQUpdate(changeFilterFields.q);
+        } else {
+            setQueryParams((prev) => ({ ...prev, ...changeFilterFields }));
+        }
     };
 
     return (
@@ -69,7 +81,6 @@ const UsersPage = () => {
                     </Button>
                 </Filter>
             </Form>
-            {/* {role === "customer" ? <CustomerTable /> : <SellerTable />} */}
 
             <div style={{ marginTop: "24px" }}>
                 {isError && <div>{error.message}</div>}

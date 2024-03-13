@@ -9,6 +9,14 @@ export type FieldData = {
     value?: string;
 };
 
+export type TQueryParams = {
+    perPage: number;
+    currentPage: number;
+    q: string | undefined;
+    role: string;
+    status: string;
+};
+
 export type AdminLoginCredentials = {
     email: string;
     password: string;
