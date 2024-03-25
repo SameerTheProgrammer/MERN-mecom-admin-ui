@@ -108,6 +108,9 @@ const UsersPage = () => {
                                     };
                                 });
                             },
+                            showTotal: (total: number, range: number[]) => {
+                                return `Showing ${range[0]}-${range[1]} of ${total} items`;
+                            },
                         }}
                     />
                 ) : (
@@ -129,6 +132,9 @@ const UsersPage = () => {
                                         currentPage: page || CURRENT_PAGE,
                                     };
                                 });
+                            },
+                            showTotal: (total: number, range: number[]) => {
+                                return `Showing ${range[0]}-${range[1]} of ${total} items`;
                             },
                         }}
                     />
