@@ -18,6 +18,7 @@ const SellerTableColumns = () => {
             dataIndex: "name",
             key: "name",
             sorter: true,
+            ellipsis: true,
             render: (_text, record) => {
                 return (
                     <Link to={`/auth/seller/get/${record.id}`}>
@@ -68,29 +69,30 @@ const SellerTableColumns = () => {
             title: "Description",
             dataIndex: "description",
             key: "description",
-            ellipsis: {
-                showTitle: false,
+            render: (_, { description }) => {
+                return (
+                    <Tooltip title={description}>
+                        {description?.length > 50
+                            ? `${description?.slice(0, 50)}...`
+                            : description}
+                    </Tooltip>
+                );
             },
-            // filterSearch: true,
-            render: (description) => (
-                <Tooltip placement="topLeft" title={description}>
-                    {description}
-                </Tooltip>
-            ),
         },
         {
             title: "Address",
             dataIndex: "address",
             key: "address",
             // filterSearch: true,
-            ellipsis: {
-                showTitle: false,
+            render: (_, { address }) => {
+                return (
+                    <Tooltip title={address}>
+                        {address?.length > 50
+                            ? `${address?.slice(0, 50)}...`
+                            : address}
+                    </Tooltip>
+                );
             },
-            render: (address) => (
-                <Tooltip placement="topLeft" title={address}>
-                    {address}
-                </Tooltip>
-            ),
         },
         {
             title: "Zip Code",
