@@ -27,6 +27,7 @@ const UsersPage = () => {
         isError,
         error,
         isLoading,
+        refetch,
     } = useQuery({
         queryKey: ["users", queryParams],
         queryFn: () => {
@@ -137,6 +138,7 @@ const UsersPage = () => {
                                 return `Showing ${range[0]}-${range[1]} of ${total} items`;
                             },
                         }}
+                        scroll={{ x: true }}
                     />
                 )}
             </div>
@@ -144,6 +146,7 @@ const UsersPage = () => {
             <NewSellerFormDrawer
                 drawerOpen={drawerOpen}
                 setDrawerOpen={setDrawerOpen}
+                refetch={refetch}
             />
         </>
     );

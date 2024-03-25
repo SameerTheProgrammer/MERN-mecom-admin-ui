@@ -20,13 +20,21 @@ import {
 } from "antd";
 import { InboxOutlined, PlusOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
-import { useMutation } from "@tanstack/react-query";
+import {
+    DefaultError,
+    QueryObserverResult,
+    RefetchOptions,
+    useMutation,
+} from "@tanstack/react-query";
 import { createNewSeller } from "../../http/apiFunction";
 import { IHttpError } from "../../types";
 
 interface NewSellerFormDrawerProps {
     drawerOpen: boolean;
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
+    refetch: (
+        options?: RefetchOptions,
+    ) => Promise<QueryObserverResult<unknown, DefaultError>>;
 }
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -42,6 +50,7 @@ const getBase64 = (file: FileType): Promise<string> =>
 const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
     drawerOpen,
     setDrawerOpen,
+    refetch,
 }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
@@ -76,6 +85,7 @@ const NewSellerFormDrawer: React.FC<NewSellerFormDrawerProps> = ({
                 duration: 2,
             });
             form.resetFields();
+            refetch();
         },
         onError: async (error) => {
             message.destroy("createNewSeller");
